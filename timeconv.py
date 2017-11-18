@@ -3,6 +3,8 @@
 import pandas as pd
 import numpy as np
 import sys
+import seaborn as sns
+import matplotlib.pyplot as p
 
 try:
     file = sys.argv[1]
@@ -24,7 +26,7 @@ stop = stop.values
 
 def convertTime(time):
     time_conv = []
-    date_conv = []
+    #date_conv = []
     for i in range(len(time)):
         tmp = time[i]
         sec = int(tmp[17:19])
@@ -40,26 +42,41 @@ def convertTime(time):
             year = year * 366
         else:
             year = year * 365
+       
+        t = sec + mins*60 + h*3600
+        d = date + month + year 
         
+        total = t//3600 + d*24
 
-        time_conv.append( sec + mins*60 + h*3600 )
-        date_conv.append(date + month + year)
+        time_conv.append( total )
+        #date_conv.append(d)
 
-    return time_conv, date_conv
+    return time_conv #, date_conv
 
 def split(data):
     starttime = data['starttime'].values
     stoptime = data['stoptime'].values
-    startTime, startDate = convertTime(starttime)
-    stopTime, stopDate = convertTime(stoptime)
-    start = pd.DataFrame({'time': startTime, 'date': startDate, 'ID': data['start station id']})
+    startTime = convertTime(starttime)
+    stopTime = convertTime(stoptime)
+    start = pd.DataFrame({'starttime': startTime, 'startID': data['start station id']})
     
-    stop = pd.DataFrame({'time': stopTime, 'date': stopDate, 'ID': data['end station id']})
+    stop = pd.DataFrame({'stoptime': stopTime, 'stopID': data['end station id']})
     
+    start = start.groupby(start.columns.tolist(), as_index=False ).size()
+    stop = stop.groupby(stop.columns.tolist(), as_index=False ).size()
     return start, stop
+
+
 
 print(convertTime(start[:2]))
 print(convertTime(stop[:3]))
 start, stop  = split(data)
+
+df = pd.melt(start, id_vars= ['starttime'], value_vars=start.iloc[:,2], hue = ['startID'])
+
+sns.barplot(x = id_vars, y = value_vars, hue = hue, data = df)
+
+p.savefig("barplot.png")
+
 print(start.head())
 print(stop.head())
