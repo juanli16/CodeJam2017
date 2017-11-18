@@ -16,8 +16,11 @@ m = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
 
 data = pd.read_csv(file)
 
-time = data['starttime']
-time = time.values
+start = data['starttime']
+start = start.values
+
+stop = data['stoptime']
+stop = stop.values
 
 def convertTime(time):
     time_conv = []
@@ -28,16 +31,35 @@ def convertTime(time):
         mins = int(tmp[14:16])
         h = int(tmp[11:13])
         date  = int(tmp[8:10])      
-        month = m[int(tmp[5:7])]
+        month = int(tmp[5:7])
+        
+        month = sum([m[i] for i in range(1,month)])
+       
         year = (int(tmp[2:4])-14)
         if year%4==0:
             year = year * 366
         else:
             year = year * 365
         
+
         time_conv.append( sec + mins*60 + h*3600 )
         date_conv.append(date + month + year)
 
     return time_conv, date_conv
 
-print(convertTime(time[:2]))
+def split(data):
+    starttime = data['starttime'].values
+    stoptime = data['stoptime'].values
+    startTime, startDate = convertTime(starttime)
+    stopTime, stopDate = convertTime(stoptime)
+    start = pd.DataFrame({'time': startTime, 'date': startDate, 'ID': data['start station id']})
+    
+    stop = pd.DataFrame({'time': stopTime, 'date': stopDate, 'ID': data['end station id']})
+    
+    return start, stop
+
+print(convertTime(start[:2]))
+print(convertTime(stop[:3]))
+start, stop  = split(data)
+print(start.head())
+print(stop.head())
