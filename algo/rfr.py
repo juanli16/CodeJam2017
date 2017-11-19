@@ -5,6 +5,7 @@ from sklearn.metrics import mean_squared_log_error as msle
 from sklearn.model_selection import KFold
 import matplotlib.pyplot as p
 import seaborn as sns
+import pandas as pd
 
 def loadData():
 	#load data
@@ -33,7 +34,7 @@ x = x[1000:]
 y = y[1000:]
 
 
-model = rfr(n_estimators=30, criterion='mse', n_jobs=16, verbose=1)
+model = rfr(n_estimators=10, criterion='mse', n_jobs=7, verbose=0)
 
 kf = KFold(n_splits=5)
 d = {}
@@ -56,7 +57,7 @@ best = d[ min(d.keys())]
 w = best.fit(x_train, y_train)
 pred = w.predict(x_val)
 
-df = pd.DataFrame({'x': y_val, 'y': pred})
+df = pd.DataFrame(data={'x': y_val, 'y': pred})
 
 fig = sns.regplot(x = 'x', y ='y', data=df, scatter=True) 
 fig.savefig('scatter.png')
