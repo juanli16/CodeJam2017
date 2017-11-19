@@ -12,6 +12,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 try:
     file = sys.argv[1]
+    fname = sys.argv[2]
     print("Processing ", file)
 except IndexError:
     print("Need file name as argument")
@@ -59,7 +60,7 @@ def split(data):
     stop = np.array([ [i, j, v] for (i,j), v in stopD.items() ] )
     
     start = pd.DataFrame({'starttime': start[:,1], 'startID': start[:,0], 'count': start[:,2] } )
-    stop = pd.DataFrame({'stoptime': stop[:,1], 'startID': stop[:,0], 'count': stop[:,2] } )
+    stop = pd.DataFrame({'stoptime': stop[:,1], 'stopID': stop[:,0], 'count': stop[:,2] } )
     #start = pd.DataFrame({'starttime': startTime, 'startID': data['start station id']})
     #stop = pd.DataFrame({'stoptime': stopTime, 'stopID': data['end station id']})
     
@@ -99,7 +100,7 @@ stop = stop.values
 #Preprocess data
 start, stop  = split(data)
 
-saveDF(start, "2014-04start.csv")
-saveDF(stop, "2014-04stop.csv")
+saveDF(start, fname+"start.csv")
+saveDF(stop, fname+"stop.csv")
 
 
