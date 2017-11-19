@@ -52,8 +52,8 @@ for k, v in location.items():
 
 print(count[0])
 print(len(count))
-bikein = count[:,0]
-bikeout = count[:,1]
+bikein = np.array(count)[:,0]
+bikeout = np.array(count)[:,1]
 
 
 df = pd.DataFrame(data = {'location':locid, 'bikein':bikein, 'bikeout':bikeout})
