@@ -1,4 +1,4 @@
-#Visualization
+# Visualization
 
 ## prediction vs actual value plots
 2014pred.pdf shows a scatter plot of the predicted bike in/out values vs 
