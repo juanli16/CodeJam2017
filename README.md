@@ -4,8 +4,8 @@ This repository is for CodeJam 2017 DataDive.
 We are given the transportation data, which contained NewYork City 
 2014 Bike traffic data, Uber, taxi and public transportation data. 
 
-We focused on analyzing the bike traffic data, and we used also data from 2015, 2016 and 2017i from [CitiBike] (https://s3.amazonaws.com/tripdata/index.html).
-The preprocessed data can be downloaded [here] (https://mcgill-my.sharepoint.com/personal/michael_saraga2_mail_mcgill_ca/_layouts/15/guestaccess.aspx?docid=103cac871e20942959adeb275f4632770&authkey=AUHz738FG4SdI7_Ibbhl-FE&e=3f9c6219dd7a49c4ae94b89b0db61ae2)
+We focused on analyzing the bike traffic data, and we used also data from 2015, 2016 and 2017i from [CitiBike](https://s3.amazonaws.com/tripdata/index.html).
+The preprocessed data can be downloaded [here](https://mcgill-my.sharepoint.com/personal/michael_saraga2_mail_mcgill_ca/_layouts/15/guestaccess.aspx?docid=103cac871e20942959adeb275f4632770&authkey=AUHz738FG4SdI7_Ibbhl-FE&e=3f9c6219dd7a49c4ae94b89b0db61ae2)
 ##Objective
 To create a model that predicts the number of bikes at the station at any point in time (bikes inflow and outflow). This information would be useful to blue collars to move and reallocate bikes from one station to the other depending on expected traffic. 
 
