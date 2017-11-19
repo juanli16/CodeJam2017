@@ -26,55 +26,44 @@ def loadData():
 
 
 x, y = loadData()
+
 #Plot the number of trips per location ID:
+
 location={}
 
 for i in range(x.shape[0]):
 	tmpx = x[i]
 	location[int(tmpx[0])] = [0, 0]
 
-for i in range(x.shape[0]):
-	tmpx = x[i]
-	tmpy = y[i]
-	location[int(tmpx[0])] = [tmpy[0], tmpy[1]] + location[int(tmpx[0])]
+for j in range(x.shape[0]):
+	tmpx = x[j]
+	tmpy = y[j]
+	location[ int(tmpx[0]) ] = [sum(x) for x in zip ([ tmpy[0], tmpy[1] ], location[ int(tmpx[0]) ]) ]
 
-'''
-locid, bikes = location.keys, location.values()
+
+
+locid, bikes = location.keys(), location.values()
 bikes=  list(bikes)
 locid = list(locid)
-'''
 
-locid=[]
-count=[]
-for k, v in location.items():
-	locid.append(k)
-	count.append(v)
+locid = np.array(locid)
+bikes = np.array(bikes)
 
-print(count[0])
-print(len(count))
-bikein = np.array(count)[:,0]
-bikeout = np.array(count)[:,1]
+bikein = np.array(bikes)[:,0]
+bikein = bikein/1000
+bikeout = np.array(bikes)[:,1]
+bikeout = bikeout/1000
 
 
-df = pd.DataFrame(data = {'location':locid, 'bikein':bikein, 'bikeout':bikeout})
+df = pd.DataFrame(data = {'location':locid[:50], 'bikein':bikein[:50], 'bikeout':bikeout[:50]})
+
+df2 = pd.melt(df, id_vars="location", var_name = "Bike flow", value_name = "Count (1000/month)")
+
+print(df2.head())
 
 #First plot
-top_plot = sns.barplot(x='location', y='bikein', color="#0000A3", data = df )
+#top_plot = sns.barplot(x='location', y='bikein', color="#0000A3", data = df )
+sns.factorplot(x="location", y="Count (1000/month)", hue="Bike flow", data=df2, kind='bar')
 
-bottom_plot = sns.barplot(x='location', y='bikeout', color="#0000A3", data = df )
-
-sns.despine(left=True)
-bottom_plot.set_ylabel("Y-axis label")
-bottom_plot.set_xlabel("X-axis label")
-
-topbar = p.Rectangle((0,0),1,1,fc="red", edgecolor = 'none')
-bottombar = p.Rectangle((0,0),1,1,fc='#0000A3',  edgecolor = 'none')
-l = p.legend([bottombar, topbar], ['Bottom Bar', 'Top Bar'], loc=1, ncol = 2, prop={'size':16})
-l.draw_frame(False)
-
-#Set fonts to consistent 16pt size
-for item in ([bottom_plot.xaxis.label, bottom_plot.yaxis.label] +
-             bottom_plot.get_xticklabels() + bottom_plot.get_yticklabels()):
-	item.set_fontsize(16)
 
 p.show()
