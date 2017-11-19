@@ -16,21 +16,12 @@ try:
 except IndexError:
     print("Need file name as argument")
 
-#month dictionary:
-m = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
 
-
-data = pd.read_csv(file)
-
-start = data['starttime']
-start = start.values
-
-stop = data['stoptime']
-stop = stop.values
 
 def convertTime(time):
     time_conv = []
     #date_conv = []
+    m = {1:31, 2:28, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
     for i in range(len(time)):
         tmp = time[i]
         sec = int(tmp[17:19])
@@ -77,24 +68,38 @@ def split(data):
     return start, stop
 
 
+
+def plot3d(start):
+    x = start['starttime'].values
+    y = start['startID'].values
+    z = start['count'].values
+
+    fig = p.figure()
+    ax = fig.add_subplot(111, projection='3d')
+
+    ax.bar3d(x, y, z, 0.1, 0.1, 0.1)
+    ax.set_xlabel('Start Time')
+    ax.set_ylabel('Start ID')
+    ax.set_zlabel('Count')
+
+    p.savefig('3Dbarplot.png')
+
+
+def saveDF(df, name):
+    df.to_csv(name,sep=',',index=False,encoding='utf-8')
+
+data = pd.read_csv(file)
+
+start = data['starttime']
+start = start.values
+
+stop = data['stoptime']
+stop = stop.values
+
+#Preprocess data
 start, stop  = split(data)
 
+saveDF(start, "2014-04start.csv")
+saveDF(stop, "2014-04stop.csv")
 
-print(start.head())
 
-x = start['starttime'].values
-y = start['startID'].values
-z = start['count'].values
-
-fig = p.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-ax.bar3d(x, y, z, 0.1, 0.1, 0.1)
-ax.set_xlabel('Start Time')
-ax.set_ylabel('Start ID')
-ax.set_zlabel('Count')
-
-p.savefig('3Dbarplot.png')
-
-print(start.head())
-print(stop.head())

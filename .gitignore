@@ -1,0 +1,8 @@
+#ignore datafies
+
+data/*
+*.csv
+
+*.png
+plot/*
+
