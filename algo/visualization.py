@@ -38,7 +38,8 @@ for i in range(x.shape[0]):
 	tmpy = y[i]
 	location[int(tmpx[0])] = [tmpy[0], tmpy[1]] + location[int(tmpx[0])]
 
-locid, bikes = location.items()
+locid, bikes = location.keys, location.values()
+bikes = [[i, j] for (i, j) in zip(bikes)]
 bikein = bikes[:,0]
 bikeout = bikes[:,1]
 
