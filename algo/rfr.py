@@ -3,7 +3,8 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor as rfr 
 from sklearn.metrics import mean_squared_log_error as msle
 from sklearn.model_selection import KFold
-
+import matplotlib.pyplot as p
+import seaborn as sns
 
 def loadData():
 	#load data
@@ -32,15 +33,30 @@ x = x[1000:]
 y = y[1000:]
 
 
-model = rfr(n_estimators=300, criterion='mse', n_jobs=7, verbose=1)
+model = rfr(n_estimators=30, criterion='mse', n_jobs=16, verbose=1)
 
 kf = KFold(n_splits=5)
-
+d = {}
 for train, test in kf.split(x):
 	x_train, x_test = x[train], x[test]
 	y_train, y_test = y[train], y[test]
 	w = model.fit(x_train, y_train)
-	print("Training Score is ", w.score(x_train, y_train))
-	print("Testing Score is ", w.score(x_test, y_test))
+	pred_test = w.predict(x_test)
+	m_test = msle(y_test, pred_test)
+	print("msle for testing set is: ", m_test)
 	pred = w.predict(x_val)
-	print("msle is ", msle(y_val, pred) )
+	#print(pred[:100], y_val[:100])
+	m_val = msle(y_val, pred)
+	print("msle for validation set is ", m_val )
+	d[m_test*0.3 + m_val*0.7] = w
+
+
+#Find the best tree:
+best = d[ min(d.keys())]	
+w = best.fit(x_train, y_train)
+pred = w.predict(x_val)
+
+df = pd.DataFrame({'x': y_val, 'y': pred})
+
+fig = sns.regplot(x = 'x', y ='y', data=df, scatter=True) 
+fig.savefig('scatter.png')
