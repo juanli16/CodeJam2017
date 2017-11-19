@@ -38,10 +38,22 @@ for i in range(x.shape[0]):
 	tmpy = y[i]
 	location[int(tmpx[0])] = [tmpy[0], tmpy[1]] + location[int(tmpx[0])]
 
+'''
 locid, bikes = location.keys, location.values()
-bikes = [[i, j] for (i, j) in zip(bikes)]
-bikein = bikes[:,0]
-bikeout = bikes[:,1]
+bikes=  list(bikes)
+locid = list(locid)
+'''
+
+locid=[]
+count=[]
+for k, v in location.items():
+	locid.append(k)
+	count.append(v)
+
+print(count[0])
+print(len(count))
+bikein = count[:,0]
+bikeout = count[:,1]
 
 
 df = pd.DataFrame(data = {'location':locid, 'bikein':bikein, 'bikeout':bikeout})
